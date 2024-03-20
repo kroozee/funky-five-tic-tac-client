@@ -1,4 +1,5 @@
-import { randomMove } from "./clientActions";
+import { calculateMove, calculateMoveProps } from './calculateMove';
+import { move } from "./clientActions";
 import { FullPosition, PlayerId, PositionValue, SeriesId, SeriesSummary } from "./dtos";
 
 type SeriesWithTurnInProgress = {
@@ -62,11 +63,20 @@ export const getPlayer = (playerId: PlayerId, positionValue: PositionValue) => {
             }
         }
 
+        const moveProps: calculateMoveProps = {
+            availableMoves: inProgress.currentGame.availableMoves,
+            previousMoves: inProgress.currentGame.previousMoves
+        };
+
+        let bestMove = calculateMove(moveProps);
+
+        move(playerId, bestMove as FullPosition);
+
         console.log(`${positionValue}: It's my turn, but no one has made me smart yet. I will just do something random for series ${summary.id}.`);
-        setTimeout(() => {
-            randomMove(playerId)            
-                .catch(error => console.error(`Error making random move: ${error.message}`));            
-        }, 100)
+        // setTimeout(() => {
+        //     randomMove(playerId)            
+        //         .catch(error => console.error(`Error making random move: ${error.message}`));            
+        // }, 100)
     }
 
     return {

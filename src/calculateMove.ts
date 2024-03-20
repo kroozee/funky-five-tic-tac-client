@@ -1,21 +1,22 @@
-import { FullPosition, GameSummary, PositionValue } from './dtos';
+import { FullPosition, PositionValue } from './dtos';
 
-type calculateMoveProps = {
-    previousMoveLocation: FullPosition,
-    previousMoveType: PositionValue,
+export type calculateMoveProps = {
     availableMoves: FullPosition[],
-    previousMoves: GameSummary
+    previousMoves: PreviousMoves[]
 };
 
+export type PreviousMoves = {
+    value: PositionValue,
+    position: FullPosition
+}
+
 export const calculateMove = ({
-    previousMoveLocation,
-    previousMoveType,
     availableMoves,
     previousMoves
 }: calculateMoveProps) => {
-    let boardInPlay = previousMoveLocation.charAt(2);
+    let boardInPlay = previousMoves[0].position.charAt(2);
     let availableMovesOnBoardInPlay = availableMoves.filter(m => m.charAt(0).includes(boardInPlay));
-    let movesOnThatBoard = previousMoves.previousMoves.filter(m => m.position.charAt(0).includes(boardInPlay));
+    let movesOnThatBoard = previousMoves.filter(m => m.position.charAt(0).includes(boardInPlay));
    
     const O = 0;
     const x = 1;
