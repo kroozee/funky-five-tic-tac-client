@@ -1,5 +1,5 @@
 const boardPositions = [0, 1, 2, 3, 4, 5, 6, 7, 8] as const;
-type BoardPosition = typeof boardPositions[number];
+export type BoardPosition = typeof boardPositions[number];
 
 type ArchivedGame = {
     winner: Winner | 'unknown'
@@ -41,7 +41,7 @@ export type GameSummary = {
     }
     currentTurn: [PositionValue] | []
     availableMoves: FullPosition[]
-    previousMoves: {value: PositionValue, position: FullPosition}[]
+    previousMoves: { value: PositionValue, position: FullPosition }[]
 }
 
 export type IdLookupResponse = {

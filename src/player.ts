@@ -1,7 +1,10 @@
 import { randomMove } from "./clientActions";
 import { FullPosition, PlayerId, PositionValue, SeriesId, SeriesSummary } from "./dtos";
+import { applyTheFunk } from './funky-five';
 
-type SeriesWithTurnInProgress = {
+export type PreviousMove = { value: PositionValue, position: FullPosition };
+
+export type SeriesWithTurnInProgress = {
     id: SeriesId
     currentGame: {
         turnsTaken: number
@@ -11,7 +14,7 @@ type SeriesWithTurnInProgress = {
         }
         currentTurn: PositionValue
         availableMoves: FullPosition[]
-        previousMoves: {value: PositionValue, position: FullPosition}[]
+        previousMoves: PreviousMove[]
     }
     timeControlSeconds: number
     gamesCompletedCount: number
@@ -23,8 +26,8 @@ export const getPlayer = (playerId: PlayerId, positionValue: PositionValue) => {
     let lastGamesCompletedCount = -1; // Mutation!?!?! Noooooooooooooo!
     let lastTurnsCompletedCount = -1;
 
-    const onUpdate = (summary: SeriesSummary) => {        
-        
+    const onUpdate = (summary: SeriesSummary) => {
+
         if (summary.gamesCompletedCount > lastGamesCompletedCount) {
             if (summary.gamesCompletedCount < summary.totalGamesCount) {
                 console.log(`${positionValue}: It looks like a new game has started. I'm excited for series ${summary.id}!`);
@@ -46,7 +49,7 @@ export const getPlayer = (playerId: PlayerId, positionValue: PositionValue) => {
         }
         if (lastGamesCompletedCount >= summary.gamesCompletedCount
             && lastTurnsCompletedCount >= summary.currentGame[0].previousMoves.length) {
-            
+
             console.log(`${positionValue}: I've already seen this turn before and I'm not a big fan of reruns for series ${summary.id}.`);
             return;
         }
@@ -63,9 +66,12 @@ export const getPlayer = (playerId: PlayerId, positionValue: PositionValue) => {
         }
 
         console.log(`${positionValue}: It's my turn, but no one has made me smart yet. I will just do something random for series ${summary.id}.`);
+
+        applyTheFunk(inProgress);
+
         setTimeout(() => {
-            randomMove(playerId)            
-                .catch(error => console.error(`Error making random move: ${error.message}`));            
+            randomMove(playerId)
+                .catch(error => console.error(`Error making random move: ${error.message}`));
         }, 100)
     }
 
