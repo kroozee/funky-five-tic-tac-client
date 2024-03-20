@@ -27,54 +27,40 @@ export const calculateMove = ({
     movesOnThatBoard.map(m => {
         let position = +m.value.charAt(2);
         let playerSymbol = m.value;
-        switch(position) { 
-        case 0:
-        case 1:
-        case 2: { 
-            moveArray[0][position] = playerSymbol
-            break; 
-        }
-        case 3:
-        case 4:
-        case 5: {
-            moveArray[1][position] = playerSymbol
-        }
-        case 6:
-        case 7:
-        case 8: {
-            moveArray[2][position] = playerSymbol
-        }
-        default:
-            break;
-        }
+        let rowIndex = Math.floor(position / 3); // Calculate row index based on position
+        let colIndex = position % 3; // Calculate column index based on position
+        moveArray[rowIndex][colIndex] = playerSymbol;
     });
+
+    // movesOnThatBoard.map(m => {
+    //     let position = +m.value.charAt(2);
+    //     let playerSymbol = m.value;
+    //     switch(position) { 
+    //     case 0:
+    //     case 1:
+    //     case 2: { 
+    //         moveArray[0][position] = playerSymbol
+    //         break; 
+    //     }
+    //     case 3:
+    //     case 4:
+    //     case 5: {
+    //         moveArray[1][position] = playerSymbol
+    //     }
+    //     case 6:
+    //     case 7:
+    //     case 8: {
+    //         moveArray[2][position] = playerSymbol
+    //     }
+    //     default:
+    //         break;
+    //     }
+    // });
 
     let bestMove = findBestMove(moveArray);
     let stringBestMove = boardInPlay + ':';
-    switch(bestMove.row) {
-        case 0:
-            if(bestMove.col == 0)
-                stringBestMove = stringBestMove + '0';
-            else if(bestMove.col == 1)
-                stringBestMove = stringBestMove + '1';
-            else 
-                stringBestMove = stringBestMove + '2';            
-            break;
-        case 1:
-            if(bestMove.col == 0) 
-                stringBestMove = stringBestMove + '3';
-            else if(bestMove.col == 1)
-                stringBestMove = stringBestMove + '4';
-            else
-                stringBestMove = stringBestMove + '5';
-        case 2:
-            if(bestMove.col == 0)
-                stringBestMove = stringBestMove + '6';
-            else if(bestMove.col == 1)
-                stringBestMove = stringBestMove + '7';
-            else
-                stringBestMove = stringBestMove + '8';  
-    }
+    stringBestMove += (bestMove.row * 3 + bestMove.col).toString();
+
     return stringBestMove;
 }
 
