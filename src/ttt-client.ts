@@ -1,5 +1,5 @@
 
-import { createSeries, lookupId } from "./clientActions";
+import { lookupId } from "./clientActions";
 import { PlayerId, SeriesId, } from "./dtos";
 import { getPlayer } from "./player";
 import { subscribe } from "./socketSubscription";
@@ -18,9 +18,9 @@ const playSeries = (playerId: PlayerId | SeriesId) => {
         });
 }
 
-playSeries('a23b85d4-6e7f-4639-85ff-1ba72da199b7'); // X
+playSeries('d7ac98d6-5459-4ee0-86b5-bb8ce5485034'); // X
 
-playSeries('dce1cbed-3042-464e-8126-54f096f82a02'); // O
+// playSeries('49771060-35af-44b3-82be-29b8b1d0f655'); // O
 
 // createSeries(100, 15, 'The Big One', 'A series of 100 games with a 15 second time control')
 //     .then(sc => {

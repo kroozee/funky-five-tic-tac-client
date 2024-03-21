@@ -1,5 +1,5 @@
-import { calculateMove, calculateMoveProps } from './calculateMove';
-import { move, randomMove } from "./clientActions";
+import { calculateMoveProps } from './calculateMove';
+import { move } from "./clientActions";
 import { FullPosition, PlayerId, PositionValue, SeriesId, SeriesSummary } from "./dtos";
 import { applyTheFunk } from './funky-five';
 
@@ -76,13 +76,19 @@ export const getPlayer = (playerId: PlayerId, positionValue: PositionValue) => {
 
         // move(playerId, bestMove as FullPosition);
 
-        console.log(`${positionValue}: It's my turn, but no one has made me smart yet. I will just do something random for series ${summary.id}.`);
 
         var moveDecision = applyTheFunk(inProgress);
 
         setTimeout(() => {
- move(playerId, moveDecision as FullPosition)          // randomMove(playerId)
-                .catch(error => console.error(`Error making random move: ${error.message}`));
+            // if (positionValue === 'O') {
+            //     console.log(`${positionValue}: It's my turn, but no one has made me smart yet. I will just do something random for series ${summary.id}.`);
+            //     randomMove(playerId)
+            //         .catch(error => console.error(`Error making random move: ${error.message}`));
+            // } else {
+            console.log(`${positionValue}: It's my turn, and I'm our cool bot making the move ${moveDecision} for series ${summary.id}.`);
+            move(playerId, moveDecision as FullPosition)
+                .catch(error => console.error(`Error making bot move: ${error.message}`));
+            // }
         }, 100)
     }
 
