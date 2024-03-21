@@ -85,7 +85,7 @@ const getPotentialWins = (
     return winningLocalPositions
         .filter(win => win.every(winPosition => playerPositions.includes(winPosition)
             || openPositions.includes(winPosition)))
-        .map(potentialWin => potentialWin.filter(winPosition => !openPositions.includes(winPosition)));
+        .map(potentialWin => potentialWin.filter(winPosition => openPositions.includes(winPosition)));
 };
 
 const toLocalGameState = (localGameMoves: Grouping<PreviousMove>, availableMoves: FullPosition[]): LocalGameState => {
