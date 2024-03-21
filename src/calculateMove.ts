@@ -14,55 +14,65 @@ export const calculateMove = ({
     availableMoves,
     previousMoves
 }: calculateMoveProps) => {
-    let boardInPlay = previousMoves[0].position.charAt(2);
-    let availableMovesOnBoardInPlay = availableMoves.filter(m => m.charAt(0).includes(boardInPlay));
-    let movesOnThatBoard = previousMoves.filter(m => m.position.charAt(0).includes(boardInPlay));
+    if(previousMoves[0]?.position){ // if there ARE previous moves ...
+        let boardInPlay = previousMoves[0]?.position.charAt(2);
+        console.log(`boardInPlay = ${boardInPlay}`)
+        let availableMovesOnBoardInPlay = availableMoves.filter(m => m.charAt(0).includes(boardInPlay));
+        let movesOnThatBoard = previousMoves.filter(m => m.position.charAt(0).includes(boardInPlay));
+        const O = 0;
+        const x = 1;
+
+        let moveArray: string[][] = [['', '', ''],
+                                    ['', '', ''],
+                                    ['', '', '']]
+
+        movesOnThatBoard.map(m => {
+            let position = +m.value.charAt(2);
+            let playerSymbol = m.value;
+            let rowIndex = Math.floor(position / 3); // Calculate row index based on position
+            let colIndex = position % 3; // Calculate column index based on position
+            moveArray[rowIndex][colIndex] = playerSymbol;
+        });
+
+        // movesOnThatBoard.map(m => {
+        //     let position = +m.value.charAt(2);
+        //     let playerSymbol = m.value;
+        //     switch(position) { 
+        //     case 0:
+        //     case 1:
+        //     case 2: { 
+        //         moveArray[0][position] = playerSymbol
+        //         break; 
+        //     }
+        //     case 3:
+        //     case 4:
+        //     case 5: {
+        //         moveArray[1][position] = playerSymbol
+        //     }
+        //     case 6:
+        //     case 7:
+        //     case 8: {
+        //         moveArray[2][position] = playerSymbol
+        //     }
+        //     default:
+        //         break;
+        //     }
+        // });
+
+        let bestMove = findBestMove(moveArray);
+        let stringBestMove = boardInPlay + ':';
+        stringBestMove += (bestMove.row * 3 + bestMove.col).toString();
+
+        return stringBestMove;
+    }
+    // } else { // first move... select [4:4]
+    //     return "4:4"
+    // }
+
    
-    const O = 0;
-    const x = 1;
+    
 
-    let moveArray: string[][] = [['', '', ''],
-                                 ['', '', ''],
-                                 ['', '', '']]
-
-    movesOnThatBoard.map(m => {
-        let position = +m.value.charAt(2);
-        let playerSymbol = m.value;
-        let rowIndex = Math.floor(position / 3); // Calculate row index based on position
-        let colIndex = position % 3; // Calculate column index based on position
-        moveArray[rowIndex][colIndex] = playerSymbol;
-    });
-
-    // movesOnThatBoard.map(m => {
-    //     let position = +m.value.charAt(2);
-    //     let playerSymbol = m.value;
-    //     switch(position) { 
-    //     case 0:
-    //     case 1:
-    //     case 2: { 
-    //         moveArray[0][position] = playerSymbol
-    //         break; 
-    //     }
-    //     case 3:
-    //     case 4:
-    //     case 5: {
-    //         moveArray[1][position] = playerSymbol
-    //     }
-    //     case 6:
-    //     case 7:
-    //     case 8: {
-    //         moveArray[2][position] = playerSymbol
-    //     }
-    //     default:
-    //         break;
-    //     }
-    // });
-
-    let bestMove = findBestMove(moveArray);
-    let stringBestMove = boardInPlay + ':';
-    stringBestMove += (bestMove.row * 3 + bestMove.col).toString();
-
-    return stringBestMove;
+    
 }
 
 function findBestMove(board: string[][]): { row: number, col: number } {

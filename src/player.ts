@@ -1,5 +1,5 @@
 import { calculateMove, calculateMoveProps } from './calculateMove';
-import { move } from "./clientActions";
+import { move, randomMove } from "./clientActions";
 import { FullPosition, PlayerId, PositionValue, SeriesId, SeriesSummary } from "./dtos";
 import { applyTheFunk } from './funky-five';
 
@@ -71,16 +71,17 @@ export const getPlayer = (playerId: PlayerId, positionValue: PositionValue) => {
             previousMoves: inProgress.currentGame.previousMoves
         };
 
-        let bestMove = calculateMove(moveProps);
+        console.log(JSON.stringify(moveProps))
+        // let bestMove = calculateMove(moveProps);
 
-        move(playerId, bestMove as FullPosition);
+        // move(playerId, bestMove as FullPosition);
 
         console.log(`${positionValue}: It's my turn, but no one has made me smart yet. I will just do something random for series ${summary.id}.`);
 
-        applyTheFunk(inProgress);
+        var moveDecision = applyTheFunk(inProgress);
 
         setTimeout(() => {
-            randomMove(playerId)
+ move(playerId, moveDecision as FullPosition)          // randomMove(playerId)
                 .catch(error => console.error(`Error making random move: ${error.message}`));
         }, 100)
     }

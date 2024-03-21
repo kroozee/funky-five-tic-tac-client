@@ -1,5 +1,5 @@
 
-import { lookupId } from "./clientActions";
+import { createSeries, lookupId } from "./clientActions";
 import { PlayerId, SeriesId, } from "./dtos";
 import { getPlayer } from "./player";
 import { subscribe } from "./socketSubscription";
